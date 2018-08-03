@@ -1,0 +1,45 @@
+.cc-phones{
+    position:relative;
+    font-size:12pt;
+
+    .flag{
+        width: 16px;
+        height: 16px;
+    }
+    .phones{
+        display: none;
+        position: absolute;
+        max-width:140px;
+        width:100%;
+        border-left:1px solid #e2e2e2;
+        border-right:1px solid #e2e2e2;
+        border-bottom:1px solid #e2e2e2;
+        background-color: #fff;
+        border-radius: 0 0 3px 3px;
+       
+    }
+    .main-phone{
+        background: #fff;
+        border:1px solid #e2e2e2;
+    }
+    .main-phone, .phone-item, {
+        display: flex;
+        align-items: center;
+        width:100%;
+        max-width:140px;
+        padding:.2em .4em;
+
+        .flag{
+            float:left;
+            margin-right: 6px;
+            margin-top: 2px; 
+        }
+        .spear{
+            float:right;
+            margin-left:auto;
+            path{
+                fill: #333!important;
+            }
+        }
+    }
+}

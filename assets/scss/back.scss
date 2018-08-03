@@ -1,0 +1,55 @@
+ul.phone-list{
+    font-size:12pt;
+    max-width:500px;
+    background-color:#fff;
+    padding:.5em;
+    border-radius:3px;
+    display:flex;
+    flex-direction:column;
+
+
+    li{
+        background-color: #f7f7f7;
+        padding: .4em;
+        margin: .3em;
+        display:flex;        
+
+        .delete{
+            float: right;
+            color:red;
+           margin-left:6px;
+            &:hover{
+                text-decoration: none;
+            }
+        }
+        
+        .edit{
+            margin-left:auto;
+            float: right;
+            color:blue;
+            &:hover{
+                text-decoration: none;
+            }
+        }
+
+    }
+
+}
+
+#add_number{
+    font-size:12pt;
+    max-width:500px;
+    background-color:#fff;
+    padding:.5em;
+    border-radius:3px;
+    display:flex;
+    flex-direction:column;
+    
+    input{
+        margin-bottom: .5em;
+    }
+    .ch-add-hone, .ch-save-hone{
+        max-width: 90px;
+        text-align: center;
+    }
+}
