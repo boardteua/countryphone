@@ -6,7 +6,8 @@ jQuery(document).ready(function ($) {
     );
     $(".phones").on('mouseleave', function () {
         $('.phones ').slideUp('medium');
-    }
-    );
-
+    });
+    $(".phones").on('click', function () {
+        $('.phones ').slideUp('medium');
+    });
 });

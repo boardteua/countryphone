@@ -1,6 +1,7 @@
 .cc-phones{
     position:relative;
     font-size:12pt;
+    color:#333;
 
     .flag{
         width: 16px;
@@ -42,4 +43,8 @@
             }
         }
     }
+}
+.cc-item{
+     min-width:140px;
+     vertical-align: middle;
 }

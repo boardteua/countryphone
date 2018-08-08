@@ -17,12 +17,12 @@ ul.phone-list{
         .delete{
             float: right;
             color:red;
-           margin-left:6px;
+            margin-left:6px;
             &:hover{
                 text-decoration: none;
             }
         }
-        
+
         .edit{
             margin-left:auto;
             float: right;
@@ -36,7 +36,7 @@ ul.phone-list{
 
 }
 
-#add_number{
+#add_number, #add_setting{
     font-size:12pt;
     max-width:500px;
     background-color:#fff;
@@ -44,12 +44,31 @@ ul.phone-list{
     border-radius:3px;
     display:flex;
     flex-direction:column;
-    
+
     input{
         margin-bottom: .5em;
     }
     .ch-add-hone, .ch-save-hone{
         max-width: 90px;
         text-align: center;
+    }
+}
+
+#add_setting{
+    margin-top: 1em;
+    padding:1em .5em;
+
+    .add_to_menu_box{
+        display: flex;
+        align-items: center;
+        margin-bottom: .5em;
+        label{
+            margin-right: 6px;
+            margin-top: -13px;
+        }
+    }
+
+    .hide{
+        display: none!important;
     }
 }

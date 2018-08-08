@@ -1,6 +1,7 @@
 .cc-phones {
   position: relative;
-  font-size: 12pt; }
+  font-size: 12pt;
+  color: #333; }
   .cc-phones .flag {
     width: 16px;
     height: 16px; }
@@ -32,5 +33,9 @@
       margin-left: auto; }
       .cc-phones .main-phone .spear path, .cc-phones .phone-item .spear path {
         fill: #333 !important; }
+
+.cc-item {
+  min-width: 140px;
+  vertical-align: middle; }
 
 /*# sourceMappingURL=style.css.map */

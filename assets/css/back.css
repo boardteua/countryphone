@@ -24,7 +24,7 @@ ul.phone-list {
       ul.phone-list li .edit:hover {
         text-decoration: none; }
 
-#add_number {
+#add_number, #add_setting {
   font-size: 12pt;
   max-width: 500px;
   background-color: #fff;
@@ -32,10 +32,23 @@ ul.phone-list {
   border-radius: 3px;
   display: flex;
   flex-direction: column; }
-  #add_number input {
+  #add_number input, #add_setting input {
     margin-bottom: .5em; }
-  #add_number .ch-add-hone, #add_number .ch-save-hone {
+  #add_number .ch-add-hone, #add_number .ch-save-hone, #add_setting .ch-add-hone, #add_setting .ch-save-hone {
     max-width: 90px;
     text-align: center; }
+
+#add_setting {
+  margin-top: 1em;
+  padding: 1em .5em; }
+  #add_setting .add_to_menu_box {
+    display: flex;
+    align-items: center;
+    margin-bottom: .5em; }
+    #add_setting .add_to_menu_box label {
+      margin-right: 6px;
+      margin-top: -13px; }
+  #add_setting .hide {
+    display: none !important; }
 
 /*# sourceMappingURL=back.css.map */

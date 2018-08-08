@@ -21,7 +21,6 @@ class ch_setting {
     /**
      * Holds the values to be used in the fields callbacks
      */
-    private $options;
     private $ch;
 
     /**
@@ -42,6 +41,8 @@ class ch_setting {
         add_action('wp_ajax_add_row', [$this, 'add_row']);
         add_action('wp_ajax_edit_row', [$this, 'edit_row']);
         add_action('wp_ajax_delete_row', [$this, 'delete_row']);
+        add_action('wp_ajax_add_to_menu', [$this, 'add_to_menu']);
+        add_action('wp_ajax_set_menu', [$this, 'set_menu']);
     }
 
     /**
@@ -60,7 +61,8 @@ class ch_setting {
      */
     public function create_admin_page() {
         // Set class property
-        $this->options = get_option($this->ch->prefix . '-option');
+
+        $nav_setting = get_option($this->ch->prefix . '-inmenu');
         ?>
         <div class="wrap">
             <h1>Phone by Country Setting Page</h1>
@@ -72,6 +74,18 @@ class ch_setting {
                 Phone <input name="phone_number" class="ch-phone-number" /> Geo Code <input name="country_code" class="ch-country-code " />
                 <a href="#" class="ch-add-hone button button-primary">Add Phone</a>
                 <a href="#" class="ch-save-hone button button-primary">Save Phone</a>
+
+            </form>
+
+            <form method="post" id="add_setting">
+                <div class="add_to_menu_box">
+                    <label for="add_to_nav">Add phone dropdown to menu</label>
+                    <input name="add_to_nav" type="checkbox" id="add_to_nav" <?php if ($nav_setting == 'true') echo'checked="checked"'; ?>>
+                </div>
+                <div class="select_menu_box "  >
+
+                    <?php $this->get_navs() ?>
+                </div>
             </form>
 
 
@@ -88,6 +102,71 @@ class ch_setting {
                 $this->ch->prefix . '-option', // Option name
                 array($this, 'sanitize') // Sanitize
         );
+    }
+
+    /**
+     * get dropdown with avaliable navs list
+     */
+    private function get_navs() {
+
+        $menus = get_registered_nav_menus();
+
+        $sel_menu = (get_option($this->ch->prefix . '-selnav')) ? get_option($this->ch->prefix . '-selnav') : '';
+
+        echo ' <label for="locations-primary" class="selected-menu">Select a menu to edit:</label>';
+        echo ' <select name="menu-locations" id="locations-primary">';
+        foreach ($menus as $location => $description) {
+            $cur = '';
+            if ($sel_menu == $location) {
+                $cur = 'selected="selected"';
+            }
+            echo '<option ' . $cur . '  value="' . $location . '">' . $description . '</option>';
+        }
+
+
+        echo '</select>';
+    }
+
+    /**
+     * show dropdown in navigation menu
+     */
+    public function add_to_menu() {
+        $set = $_POST['req'];
+        if ($set != '' && !get_option($this->ch->prefix . '-inmenu')) {
+            add_option($this->ch->prefix . '-inmenu', $set);
+
+            wp_send_json_success(array(
+                'option' => $set
+            ));
+        } elseif ($set != '') {
+            update_option($this->ch->prefix . '-inmenu', $set);
+
+            wp_send_json_success(array(
+                'option' => $set
+            ));
+        }
+        die();
+    }
+
+    /**
+     * select menu where dropdown placed 
+     */
+    public function set_menu() {
+        $set = $_POST['req'];
+        if ($set != '' && !get_option($this->ch->prefix . '-selnav')) {
+            add_option($this->ch->prefix . '-selnav', $set);
+
+            wp_send_json_success(array(
+                'option' => $set
+            ));
+        } elseif ($set != '') {
+            update_option($this->ch->prefix . '-selnav', $set);
+
+            wp_send_json_success(array(
+                'option' => $set
+            ));
+        }
+        die();
     }
 
     /**
@@ -203,8 +282,8 @@ class ch_setting {
         $res[$id]['country_code'] = $country_code;
 
 
-        update_option($this->ch->prefix . '-option', $res );
-        
+        update_option($this->ch->prefix . '-option', $res);
+
         if (get_option($this->ch->prefix . '-option')) {
             wp_send_json_success(array(
                 'option' => get_option($this->ch->prefix . '-option')
@@ -228,11 +307,11 @@ class ch_setting {
             return;
         }
 
-        wp_register_script($this->ch->prefix . '-js', plugins_url('/assets/js/back.js', __FILE__), array('jquery'), '1.0');
-        wp_register_style($this->ch->prefix . '-bcss', plugins_url('/assets/css/back.css', __FILE__));
+        wp_enqueue_script($this->ch->prefix . '-js', plugins_url('/assets/js/back.js', __FILE__), array('jquery'), '1.0');
+        wp_enqueue_style($this->ch->prefix . '-bcss', plugins_url('/assets/css/back.css', __FILE__));
 
-        wp_enqueue_script($this->ch->prefix . '-js');
-        wp_enqueue_style($this->ch->prefix . '-bcss');
+       // wp_enqueue_script($this->ch->prefix . '-js');
+       // wp_enqueue_style($this->ch->prefix . '-bcss');
     }
 
 }

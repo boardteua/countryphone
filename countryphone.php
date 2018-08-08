@@ -46,22 +46,10 @@ class countryphone {
 //add shortcode
         add_shortcode($this->prefix, [$this, 'phone_list']);
 
-        wp_register_script($this->prefix . '-fjs', plugins_url('/assets/js/front.js', __FILE__), array('jquery'), '1.0');
-        wp_register_style($this->prefix . '-css', plugins_url('/assets/css/style.css', __FILE__));
-        wp_register_style($this->prefix . '-flags', plugins_url('/assets/css/flags.css', __FILE__));
 
-        wp_enqueue_script($this->prefix . '-fjs');
-        wp_enqueue_style($this->prefix . '-css');
-        wp_enqueue_style($this->prefix . '-flags');
-    }
+        add_action('wp_enqueue_scripts', [$this, 'front_assets']);
 
-    /**
-     * 
-     * @param string $attr
-     * @return boolean
-     */
-    public function hfc($attr) {
-        $this->print_list();
+        add_filter('wp_nav_menu_items', [$this, 'add_drop_to_menu'], 10, 2);
     }
 
     /**
@@ -73,7 +61,7 @@ class countryphone {
      * @return string
      */
     public function phone_list($atts, $content = null) {
-        $this->print_list();
+        $this->print_list(true);
     }
 
     /**
@@ -132,7 +120,7 @@ class countryphone {
         return $obj->countryCode;
     }
 
-    private function print_list() {
+    private function print_list($echo) {
 
         $rows = get_option($this->prefix . '-option');
         $cc = $this->get_cc_by_ip($this->get_ip());
@@ -145,26 +133,63 @@ class countryphone {
         $spear = '<svg width="6" height="5" viewBox="0 0 6 5" fill="none" class="spear" xmlns="http://www.w3.org/2000/svg">
         <path d="M3 0L5.59808 4.5L0.401924 4.5L3 0Z" transform="translate(6 5) rotate(-180)" fill="#D42323"/>
         </svg>';
-        
-        echo '<div class="cc-phones">';
-        echo '<div class="main-phone"><div class="flag ' . strtolower($cur['country_code']) . '"></div>' . $cur['phone_number'] . $spear . '</div>';
-        echo '<div class="phones">';
-        foreach ($rows as $row) {
-            echo '<div class="phone-item">' . '<div class="flag ' . strtolower($row['country_code']) . '"></div>' . $row['phone_number'] . '</div>';
+        if ($echo) {
+            echo '<div class="cc-phones">';
+            echo '<div class="main-phone"><div class="flag ' . strtolower($cur['country_code']) . '"></div>' . $cur['phone_number'] . $spear . '</div>';
+            echo '<div class="phones">';
+            foreach ($rows as $row) {
+                echo '<div class="phone-item">' . '<div class="flag ' . strtolower($row['country_code']) . '"></div>' . $row['phone_number'] . '</div>';
+            }
+            echo '</div>';
+            echo '</div>';
+        } else {
+            $html = '';
+            $html .= '<div class="cc-phones">';
+            $html .= '<div class="main-phone"><div class="flag ' . strtolower($cur['country_code']) . '"></div>' . $cur['phone_number'] . $spear . '</div>';
+            $html .= '<div class="phones">';
+            foreach ($rows as $row) {
+                $html .= '<div class="phone-item">' . '<div class="flag ' . strtolower($row['country_code']) . '"></div>' . $row['phone_number'] . '</div>';
+            }
+            $html .= '</div>';
+            $html .= '</div>';
+
+            return $html;
         }
-        echo '</div>';
-        echo '</div>';
+    }
+
+    public function add_drop_to_menu($items, $args) {
+
+        $nav_setting = get_option($this->prefix . '-inmenu');
+        $sel_menu = get_option($this->prefix . '-selnav');
+
+        if ($nav_setting == 'true') {
+            if ($args->theme_location == $sel_menu) {
+                $items .= '<li class="menu-item cc-item cc-phones d-flex align-items-center"';
+                $items .= $this->print_list(false);
+                $items .= '</li>';
+            }
+        }
+
+        return $items;
+    }
+
+    public function front_assets() {
+        wp_enqueue_script($this->prefix . '-fjs', plugins_url('/assets/js/front.js', __FILE__), array('jquery'), '1.0');
+        wp_enqueue_style($this->prefix . '-css', plugins_url('/assets/css/style.css', __FILE__));
+        wp_enqueue_style($this->prefix . '-flags', plugins_url('/assets/css/flags.css', __FILE__));
     }
 
 }
 
 require_once 'ch_setting.php';
 
+$countryphone = countryphone::get_instance();
+
 if (is_admin()) {
     $ch_setting = new ch_setting();
 }
 
-$countryphone = countryphone::get_instance();
+
 
 
 
