@@ -1,5 +1,5 @@
 === Support Phone by Country Shortcode ===
-Plugin URI: https://weekdyas.te.ua
+Plugin URI: https://weekdays.te.ua
 Contributors: org100h
 Tags: countrycode, support, phone, geocode, shortcode
 Requires at least: 3.0.1
