@@ -39,22 +39,17 @@ class countryphone {
     }
 
     private function __construct() {
-
         $this->prefix = 'countryphone';
         $this->api = 'http://ip-api.com/json/';
-
-//add shortcode
+        //add shortcode
         add_shortcode($this->prefix, [$this, 'phone_list']);
-
-
         add_action('wp_enqueue_scripts', [$this, 'front_assets']);
-
         add_filter('wp_nav_menu_items', [$this, 'add_drop_to_menu'], 10, 2);
     }
 
     /**
      * 
-     * add_shortcode($this->prefix, [&$this, 'phone_list']);
+     * add_shortcode($this->prefix, [$this, 'phone_list']);
      * 
      * @param array $atts
      * @param string $content
